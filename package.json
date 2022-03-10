@@ -72,7 +72,7 @@
   },
   "peerDependencies": {
     "webpack": "^5.0.0",
-    "favicons": ">= 6.2.0"
+    "favicons": "^7.0.0-beta.3"
   },
   "optionalDependencies": {
     "html-webpack-plugin": ">=5.0.0"
