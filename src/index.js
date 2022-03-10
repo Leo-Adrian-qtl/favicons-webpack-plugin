@@ -400,7 +400,7 @@ class FaviconsWebpackPlugin {
     outputPath
   ) {
     const RawSource = compilation.compiler.webpack.sources.RawSource;
-    const favicons = loadFaviconsLibrary();
+    const favicons = await loadFaviconsLibrary();
     // Generate favicons using the npm favicons library
     const { html: tags, images, files } = await favicons(logoSource, {
       // Generate all assets relative to the root directory
@@ -556,15 +556,16 @@ function getHtmlWebpackPluginVersion() {
  * to resolve the breaking change
  */
 function loadFaviconsLibrary() {
-  try {
-    return require('favicons');
-  } catch (e) {
-    throw new Error(
-      `Could not find the npm peerDependency "favicons".\nPlease run:\nnpm i favicons\n - or -\nyarn add favicons\n\n${String(
-        e
-      )}`
-    );
-  }
+  return import('favicons')
+    // @ts-ignore
+    .then(({ favicons }) => favicons)
+    .catch((e) => {
+      throw new Error(
+        `Could not find the npm peerDependency "favicons".\nPlease run:\nnpm i favicons\n - or -\nyarn add favicons\n\n${String(
+          e
+        )}`
+      );
+    })
 }
 
 module.exports = FaviconsWebpackPlugin;
